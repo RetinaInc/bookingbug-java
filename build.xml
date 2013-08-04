@@ -1,0 +1,51 @@
+<project>
+
+    <path id="build-classpath">
+      <fileset dir="libs">
+          <include name="*.jar"/>
+      </fileset>
+    </path>
+
+    <property name="guava.jar" 
+        value="/home/ed/workspace/bbapi/libs/guava-13.0.1.jar"/>
+    <property name="jdom.jar" 
+        value="/home/ed/workspace/bbapi/libs/jdom-1.1.3.jar"/>
+    <property name="jsr-305.jar" 
+        value="/home/ed/workspace/bbapi/libs/jsr-305-1.3.9.jar"/>
+    <property name="jackson-core.jar" 
+        value="/home/ed/workspace/bbapi/libs/jackson-core-2.2.2.jar"/>
+    <property name="jackson-annotations.jar" 
+        value="/home/ed/workspace/bbapi/libs/jackson-annotations-2.2.2.jar"/>
+    <property name="jackson-databind.jar" 
+        value="/home/ed/workspace/bbapi/libs/jackson-databind-2.2.2.jar"/>
+
+    <target name="clean">
+        <delete dir="build"/>
+    </target>
+
+    <target name="compile">
+        <mkdir dir="build/classes"/>
+        <javac srcdir="src" destdir="build/classes" classpathref="build-classpath"/>
+    </target>
+
+    <target name="jar">
+        <mkdir dir="build/jar"/>
+        <jar destfile="build/jar/BookingBugApi.jar" basedir="build/classes">
+            <manifest>
+                <attribute name="Main-Class" value="com.bookingbug.apiclient.BookingBugConsole"/>
+                <attribute name="Class-Path" 
+                    value="${guava.jar} ${jdom.jar} ${jsr-305.jar} ${jackson-core.jar} ${jackson-annotations.jar} ${jackson-databind.jar}"/>
+            </manifest>
+        </jar>
+    </target>
+
+    <target name="run">
+        <java jar="build/jar/BookingBugApi.jar" fork="true">
+        <classpath>
+           <pathelement location="build/jar/BookingBugApi.jar"/>
+           <pathelement path="${java.class.path}"/>
+         </classpath>
+       </java>
+    </target>
+
+</project>
